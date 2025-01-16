@@ -51,7 +51,7 @@ export const TodoCards: React.FC<TodoCardsProps> = ({ toggleTheme, isDarkMode })
                 <TodoAdd onTaskAdded={handleRefresh} />
             </CCol>
             <CCol md={12} className='py-3'>
-                <TodoList refresh={refresh} onTaskAdded={handleRefresh} />
+                <TodoList refresh={refresh} onRefresh={handleRefresh} />
             </CCol>
         </CRow>
     )

@@ -16,9 +16,9 @@ interface ITasks {
 }
 interface ITodoList {
     refresh: boolean;
-    onTaskAdded: () => void;
+    onRefresh: () => void;
 }
-export const TodoList: React.FC<ITodoList> = ({ refresh, onTaskAdded }) => {
+export const TodoList: React.FC<ITodoList> = ({ refresh, onRefresh }) => {
     const [tasks, setTasks] = useState<ITasks[]>([]);
     const [data, setData] = useState<ITasks[]>([]);
     const [pendingTasks, setPendingTasks] = useState([]);
@@ -80,15 +80,17 @@ export const TodoList: React.FC<ITodoList> = ({ refresh, onTaskAdded }) => {
             await axios.delete('http://localhost:3000/todo/delete', {
                 data: { id }
             });
-
+            if (data.length === 1) {
+                setData([])
+            }
+            onRefresh()
+            setUp(prev => !prev);
             Swal.fire({
                 title: '¡Tarea eliminada!',
                 text: 'La tarea se eliminó correctamente.',
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
             });
-            onTaskAdded()
-            setUp(prev => !prev);
         } catch (error) {
             console.error("Error al eliminar tarea:", error);
             Swal.fire({
